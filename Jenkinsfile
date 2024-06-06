@@ -16,11 +16,11 @@ pipeline {
                 git branch: 'master', changelog: false, poll: false, url: 'https://github.com/expressjs/express.git'
             }
         }
-        stage('Compile') {
-            steps {
-                sh "mvn clean compile"
-            }
-        }
+        // stage('Compile') {
+        //     steps {
+        //         sh "mvn clean compile"
+        //     }
+        // }
         stage('Sonarqube Analysis') {
             steps {
                 sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.url=http://10.15.220.97:9000/ -Dsonar.login=squ_eabaeb4d5f6eb9f839b0cf2e34ea26c502da8bdb -Dsonar.projectName=express-sameple -Dsonar.sources=. -Dsonar.projectKey=express-sameple '''
@@ -32,11 +32,11 @@ pipeline {
                     dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
-        stage('Build Application') {
-            steps {
-                sh 'mvn clean install -DskipTests=true'
-            }
-        }
+        // stage('Build Application') {
+        //     steps {
+        //         sh 'mvn clean install -DskipTests=true'
+        //     }
+        // }
         stage('Build & Push Docker Image') {
             steps {
                 script {
