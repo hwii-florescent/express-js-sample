@@ -8,13 +8,13 @@ EXPOSE 3000
 WORKDIR /express-sample-app
 
 # Copy package.json and package-lock.json to the working directory
-# COPY package*.json ./
-
-# Copy the rest of the application code to the working directory
-COPY . .
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+
+# Copy the rest of the application code to the working directory
+COPY . .
 
 # Start the application
 CMD ["node", "examples/hello-world"]
