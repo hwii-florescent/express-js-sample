@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:22.2-alpine3.19
+FROM node:20-slim
 
 # Expose the port the app runs on
 EXPOSE 3000
