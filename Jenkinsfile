@@ -44,7 +44,7 @@ pipeline {
                         sh "docker build -t hello-express:latest -f Dockerfile ."
                         sh "docker tag hello-express:latest hwii2803/hello-express:latest"
                         sh "docker push hwii2803/hello-express:latest"
-                        sh "docker run -d --name hello-express -p 8071:8070 hwii2803/hello-express:latest"
+                        sh "docker run -d --name hello-express -p 3000:3000 hwii2803/hello-express:latest"
                     }
                 }
             }
