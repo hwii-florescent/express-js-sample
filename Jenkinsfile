@@ -42,9 +42,9 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: '751e98ba-c073-48e5-8e25-a67f83a9ca3a', toolName: 'docker') {
                         sh "docker build -t hello-express:latest -f Dockerfile ."
-                        // sh "docker tag hello-express:latest hwii2803/hello-express:latest"
-                        // sh "docker push hwii2803/hello-express:latest"
-                        // sh "docker run -d --name hello-express -p 8071:8070 hwii2803/hello-express:latest"
+                        sh "docker tag hello-express:latest hwii2803/hello-express:latest"
+                        sh "docker push hwii2803/hello-express:latest"
+                        sh "docker run -d --name hello-express -p 8071:8070 hwii2803/hello-express:latest"
                     }
                 }
             }
