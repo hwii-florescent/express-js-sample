@@ -40,11 +40,11 @@ pipeline {
         stage('Build & Push Docker Image') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '5b5fe71b-ef0c-497a-a6c9-674b90a0699e', toolName: 'docker') {
+                    withDockerRegistry(credentialsId: '5b5fe71b-ef0c-497a-a6c9-674b90a0699e', url: 'http://localhost:8083' toolName: 'docker') {
                         sh "docker build -t hello-express:latest -f Dockerfile ."
-                        sh "docker tag hello-express:latest hwii2803/hello-express:latest"
-                        sh "docker push hwii2803/hello-express:latest"
-                        sh "docker run -d --name hello-express -p 3000:3000 hwii2803/hello-express:latest"
+                        sh "docker tag hello-express:latest localhost:8083/hello-express:latest"
+                        sh "docker push localhost:8083/hello-express:latest"
+                        sh "docker run -d --name hello-express -p 3000:3000 localhost:8083/hello-express:latest"
                     }
                 }
             }
