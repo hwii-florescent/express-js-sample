@@ -21,17 +21,17 @@ pipeline {
         //         sh "mvn clean compile"
         //     }
         // }
-        // stage('Sonarqube Analysis') {
-        //     steps {
-        //         sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.url=http://10.15.220.97:9000/ -Dsonar.login=squ_eabaeb4d5f6eb9f839b0cf2e34ea26c502da8bdb -Dsonar.projectName=express-sameple -Dsonar.sources=. -Dsonar.projectKey=express-sameple '''
-        //     }
-        // }
-        // stage('OWASP SCAN') {
-        //     steps {
-        //         dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'DP'
-        //             dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //     }
-        // }
+        stage('Sonarqube Analysis') {
+            steps {
+                sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.url=http://localhost:9000/ -Dsonar.login=squ_eabaeb4d5f6eb9f839b0cf2e34ea26c502da8bdb -Dsonar.projectName=express-sameple -Dsonar.sources=. -Dsonar.projectKey=express-sameple '''
+            }
+        }
+        stage('OWASP SCAN') {
+            steps {
+                dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'DP'
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
         // stage('Build Application') {
         //     steps {
         //         sh 'mvn clean install -DskipTests=true'
