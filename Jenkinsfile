@@ -41,7 +41,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def tag = "${env.BUILD_NUMBER}"
+                    def tag = "${env.BUILD_NUMBER}.0"
                     sh "docker build -t 10.14.171.18:8082/hello-express:${tag} -f Dockerfile ."
                     sh "docker tag 10.14.171.18:8082/hello-express:${tag} 10.14.171.18:8082/hello-express:latest"
                     env.DOCKER_IMAGE_TAG = tag
