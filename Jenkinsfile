@@ -44,6 +44,7 @@ pipeline {
                     def tag = "${env.BUILD_NUMBER}-${new Date().format('yyyyMMddHHmmss')}"
                     sh "docker build -t 10.14.171.18:8082/hello-express:${tag} -f Dockerfile ."
                     sh "docker tag 10.14.171.18:8082/hello-express:${tag} 10.14.171.18:8082/hello-express:latest"
+                    env.DOCKER_IMAGE_TAG = tag
                 }
             }
         }
@@ -52,10 +53,9 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: '022220ef-2cf3-4223-811a-24b04851528e', url: 'http://10.14.171.18:8082', toolName: 'docker') {
-                        sh "docker login -u admin -p Giahuy2803! http://10.14.171.18:8082"
+                        sh "docker push 10.14.171.18:8082/hello-express:${env.DOCKER_IMAGE_TAG}"
+                        sh "docker push 10.14.171.18:8082/hello-express:latest"
                     }
-                    sh "docker push 10.14.171.18:8082/hello-express:${tag}"
-                    sh "docker push 10.14.171.18:8082/hello-express:latest"
                 }
             }
         }
