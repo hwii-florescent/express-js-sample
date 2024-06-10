@@ -62,9 +62,11 @@ pipeline {
         stage('Deploy to localhost') {
             steps {
                 script {
-                    sh "docker pull 10.14.171.18:8082/hello-express:latest"
-                    sh "docker rm -f hello-express || true"
-                    sh "docker run -d -p 3000:3000 --name hello-express 10.14.171.18:8082/hello-express:latest"
+                    withDockerRegistry(credentialsId: '022220ef-2cf3-4223-811a-24b04851528e', url: 'http://10.14.171.18:8082', toolName: 'docker') {
+                        sh "docker pull 10.14.171.18:8082/hello-express:latest"
+                        sh "docker rm -f hello-express || true"
+                        sh "docker run -d -p 3000:3000 --name hello-express 10.14.171.18:8082/hello-express:latest"
+                    }
                 }
             }
         }
