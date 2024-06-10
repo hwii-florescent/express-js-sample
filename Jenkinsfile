@@ -37,17 +37,42 @@ pipeline {
         //         sh 'mvn clean install -DskipTests=true'
         //     }
         // }
-        stage('Build & Push Docker Image') {
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def tag = "${env.BUILD_NUMBER}-${new Date().format('yyyyMMddHHmmss')}"
+                    sh "docker build -t 10.14.171.18:8082/hello-express:${tag} -f Dockerfile ."
+                    sh "docker tag 10.14.171.18:8082/hello-express:${tag} 10.14.171.18:8082/hello-express:latest"
+                }
+            }
+        }
+        
+        stage('Push Docker Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: '022220ef-2cf3-4223-811a-24b04851528e', url: 'http://10.14.171.18:8082', toolName: 'docker') {
-                        sh "docker build -t hello-express:1.0 -f Dockerfile ."
-                        sh "docker tag hello-express:latest 10.14.171.18:8082/hello-express:1.0"
-                        sh "docker push 10.14.171.18:8082/hello-express:1.0"
+                        sh "docker push 10.14.171.18:8082/hello-express:${tag}"
+                        sh "docker push 10.14.171.18:8082/hello-express:latest"
                         sh "docker run -d --name hello-express -p 3000:3000 10.14.171.18:8082/hello-express:1.0"
                     }
                 }
             }
+        }
+        stage('Deploy to localhost') {
+            steps {
+                script {
+                    sh "docker pull 10.14.171.18:8082/hello-express:latest"
+                    sh "docker rm -f hello-express || true"
+                    sh "docker run -d -p 3000:3000 --name hello-express 10.14.171.18:8082/hello-express:latest"
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Clean up the workspace
+            cleanWs()
         }
     }
 }
